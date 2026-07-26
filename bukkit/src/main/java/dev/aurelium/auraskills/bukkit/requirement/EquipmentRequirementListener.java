@@ -11,10 +11,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.entity.ThrownPotion;
 
 import java.util.Map;
 import java.util.UUID;
@@ -61,6 +63,13 @@ public class EquipmentRequirementListener implements Listener {
     public void onShoot(EntityShootBowEvent event) {
         if (event.getEntity() instanceof Player player) {
             checkMaterial(player, event.getConsumable(), event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPotionLaunch(ProjectileLaunchEvent event) {
+        if (event.getEntity() instanceof ThrownPotion potion && potion.getShooter() instanceof Player player) {
+            checkPotion(player, potion.getItem(), event);
         }
     }
 

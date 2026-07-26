@@ -56,14 +56,57 @@ requirements:
     NETHERITE_BOOTS: 300
 consumable-requirements:
   alchemy:
+    # Unknown or custom potion types require this level, preventing bypasses.
+    default-required-level: 11
     potion-effects:
-      WATER: 0
-      AWKWARD: 5
-      POISON: 20
-      REGENERATION: 50
-      STRENGTH: 100
-      SLOW_FALLING: 150
-      STRONG_STRENGTH: 300
+      # Alchemy levels 0-10: only Weakness and Swiftness potion families are usable.
+      WEAKNESS: 0
+      LONG_WEAKNESS: 0
+      SWIFTNESS: 0
+      LONG_SWIFTNESS: 0
+      STRONG_SWIFTNESS: 0
+      # All other vanilla potion types require level 11.
+      WATER: 11
+      AWKWARD: 11
+      THICK: 11
+      MUNDANE: 11
+      FIRE_RESISTANCE: 11
+      LONG_FIRE_RESISTANCE: 11
+      HARMING: 11
+      STRONG_HARMING: 11
+      HEALING: 11
+      STRONG_HEALING: 11
+      INFESTED: 11
+      INVISIBILITY: 11
+      LONG_INVISIBILITY: 11
+      LEAPING: 11
+      LONG_LEAPING: 11
+      STRONG_LEAPING: 11
+      LUCK: 11
+      NIGHT_VISION: 11
+      LONG_NIGHT_VISION: 11
+      OOZING: 11
+      POISON: 11
+      LONG_POISON: 11
+      STRONG_POISON: 11
+      REGENERATION: 11
+      LONG_REGENERATION: 11
+      STRONG_REGENERATION: 11
+      SLOW_FALLING: 11
+      LONG_SLOW_FALLING: 11
+      SLOWNESS: 11
+      LONG_SLOWNESS: 11
+      STRONG_SLOWNESS: 11
+      STRENGTH: 11
+      LONG_STRENGTH: 11
+      STRONG_STRENGTH: 11
+      TURTLE_MASTER: 11
+      LONG_TURTLE_MASTER: 11
+      STRONG_TURTLE_MASTER: 11
+      WATER_BREATHING: 11
+      LONG_WATER_BREATHING: 11
+      WEAVING: 11
+      WIND_CHARGED: 11
 arrow-requirements:
   archery:
     ARROW: 0

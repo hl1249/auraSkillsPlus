@@ -22,6 +22,7 @@ public class EquipmentRequirementManager {
     private final AuraSkills plugin;
     private final Map<Material, Requirement> materialRequirements = new HashMap<>();
     private final Map<PotionType, Requirement> potionRequirements = new HashMap<>();
+    private Requirement defaultPotionRequirement;
     private String denyMessage = "<red>{skill} level {required} is required to use {item}.";
 
     public EquipmentRequirementManager(AuraSkills plugin) {
@@ -32,6 +33,7 @@ public class EquipmentRequirementManager {
     public void load() {
         materialRequirements.clear();
         potionRequirements.clear();
+        defaultPotionRequirement = null;
         try {
             ConfigurateLoader loader = new ConfigurateLoader(plugin, TypeSerializerCollection.builder().build());
             ConfigurationNode config = loader.loadUserFile("equipment_requirements.yml");
@@ -66,6 +68,10 @@ public class EquipmentRequirementManager {
         for (Map.Entry<Object, ? extends ConfigurationNode> skillEntry : root.childrenMap().entrySet()) {
             Skill skill = getSkill(String.valueOf(skillEntry.getKey()));
             if (skill == null) continue;
+            int defaultRequiredLevel = skillEntry.getValue().node("default-required-level").getInt(-1);
+            if (defaultRequiredLevel >= 0 && defaultPotionRequirement == null) {
+                defaultPotionRequirement = new Requirement(skill, defaultRequiredLevel);
+            }
             for (Map.Entry<Object, ? extends ConfigurationNode> potionEntry : skillEntry.getValue().node("potion-effects").childrenMap().entrySet()) {
                 try {
                     PotionType type = PotionType.valueOf(String.valueOf(potionEntry.getKey()).toUpperCase(Locale.ROOT));
@@ -88,7 +94,7 @@ public class EquipmentRequirementManager {
     }
 
     public Requirement getPotionRequirement(PotionType type) {
-        return potionRequirements.get(type);
+        return potionRequirements.getOrDefault(type, defaultPotionRequirement);
     }
 
     public String getDenyMessage() {
