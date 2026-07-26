@@ -32,6 +32,7 @@ public class SkillCommand extends BaseCommand {
         if (skill.isEnabled()) {
             int startLevel = plugin.config().getStartLevel();
             if (level >= startLevel) {
+                level = Math.min(level, plugin.getSkillLevelCap(user, skill));
                 int oldLevel = user.getSkillLevel(skill);
                 user.setSkillLevel(skill, level);
                 user.setSkillXp(skill, 0);
@@ -84,7 +85,7 @@ public class SkillCommand extends BaseCommand {
             for (Skill skill : plugin.getSkillRegistry().getValues()) {
                 if (skill.isEnabled()) {
                     int oldLevel = user.getSkillLevel(skill);
-                    user.setSkillLevel(skill, level);
+                    user.setSkillLevel(skill, Math.min(level, plugin.getSkillLevelCap(user, skill)));
                     user.setSkillXp(skill, 0);
 
                     plugin.getRewardManager().applyRevertCommands(user, skill, oldLevel, level);

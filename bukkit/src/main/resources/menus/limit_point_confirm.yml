@@ -1,0 +1,38 @@
+title: '<gold>分配技能点：{skill}'
+size: 3
+fill:
+  enabled: true
+  material: black_stained_glass_pane
+items:
+  points:
+    pos: 0,4
+    material: experience_bottle
+    display_name: '<green>确认后剩余技能点：<gold>{points}'
+  skill:
+    pos: 1,4
+    material: nether_star
+    display_name: '<aqua>{skill} <gold>本次确认点数：{pending}'
+    lore:
+    - '<gray>当前技能上限：<gold>{cap}'
+    - '<gray>本次准备分配：<gold>{pending}'
+  add:
+    pos: 1,2
+    material: lime_dye
+    display_name: '<green>增加 1 点'
+  remove:
+    pos: 1,6
+    material: red_dye
+    display_name: '<red>减少 1 点'
+  confirm:
+    pos: 2,4
+    material: emerald_block
+    display_name: '<green>确认分配 {pending} 点'
+  back:
+    pos: 2,0
+    material: arrow
+    display_name: '<yellow>返回技能列表'
+  close:
+    pos: 2,8
+    material: barrier
+    display_name: '<red>关闭'
+file_version: 1

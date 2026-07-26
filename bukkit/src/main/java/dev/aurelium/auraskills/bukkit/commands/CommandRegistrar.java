@@ -251,6 +251,7 @@ public class CommandRegistrar {
         manager.registerCommand(new SkillsRootCommand(plugin));
         manager.registerCommand(new StatsCommand(plugin));
         manager.registerCommand(new SkillCommand(plugin));
+        manager.registerCommand(new PlayerCapCommand(plugin));
         manager.registerCommand(new ManaCommand(plugin));
         manager.registerCommand(new ModifierCommand(plugin));
         manager.registerCommand(new ItemCommand(plugin));

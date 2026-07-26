@@ -24,6 +24,7 @@ import dev.aurelium.auraskills.bukkit.item.*;
 import dev.aurelium.auraskills.bukkit.jobs.JobsListener;
 import dev.aurelium.auraskills.bukkit.leaderboard.BukkitLeaderboardExclusion;
 import dev.aurelium.auraskills.bukkit.level.BukkitLevelManager;
+import dev.aurelium.auraskills.bukkit.level.PlayerSkillCapManager;
 import dev.aurelium.auraskills.bukkit.listeners.BlockInteractions;
 import dev.aurelium.auraskills.bukkit.listeners.CriticalHandler;
 import dev.aurelium.auraskills.bukkit.listeners.DamageListener;
@@ -46,6 +47,8 @@ import dev.aurelium.auraskills.bukkit.region.RegionBlockListener;
 import dev.aurelium.auraskills.bukkit.region.RegionListener;
 import dev.aurelium.auraskills.bukkit.requirement.RequirementListener;
 import dev.aurelium.auraskills.bukkit.requirement.RequirementManager;
+import dev.aurelium.auraskills.bukkit.requirement.EquipmentRequirementManager;
+import dev.aurelium.auraskills.bukkit.requirement.EquipmentRequirementListener;
 import dev.aurelium.auraskills.bukkit.scheduler.BukkitScheduler;
 import dev.aurelium.auraskills.bukkit.stat.BukkitStatManager;
 import dev.aurelium.auraskills.bukkit.storage.BukkitStorageFactory;
@@ -140,6 +143,7 @@ public class AuraSkills extends JavaPlugin implements AuraSkillsPlugin {
     private BukkitMessageProvider messageProvider;
     private BukkitConfigProvider configProvider;
     private BukkitLevelManager levelManager;
+    private PlayerSkillCapManager playerSkillCapManager;
     private BukkitUserManager userManager;
     private XpRequirements xpRequirements;
     private HookManager hookManager;
@@ -158,6 +162,7 @@ public class AuraSkills extends JavaPlugin implements AuraSkillsPlugin {
     private BukkitLootManager lootManager;
     private BukkitModifierManager modifierManager;
     private RequirementManager requirementManager;
+    private EquipmentRequirementManager equipmentRequirementManager;
     private BackupProvider backupProvider;
     private InventoryManager inventoryManager;
     private MenuHelper menuHelper;
@@ -228,6 +233,7 @@ public class AuraSkills extends JavaPlugin implements AuraSkillsPlugin {
         userManager = new BukkitUserManager(this);
         presetManager = new PresetManager(this);
         generateConfigs(); // Generate default config files if missing
+        playerSkillCapManager = new PlayerSkillCapManager(this);
         generateDefaultMenuFiles();
         // Handle migration
         MigrationManager migrationManager = new MigrationManager(this);
@@ -277,6 +283,7 @@ public class AuraSkills extends JavaPlugin implements AuraSkillsPlugin {
             levelManager.loadXpRequirements(); // Requires skills loaded
             uiProvider.getBossBarManager().loadOptions(); // Requires skills registered
             requirementManager = new RequirementManager(this); // Requires skills registered
+            equipmentRequirementManager = new EquipmentRequirementManager(this);
             rewardManager.loadRewards(); // Requires skills loaded
             lootManager.loadLootTables(); // Requires skills registered
             // Register default content
@@ -383,6 +390,8 @@ public class AuraSkills extends JavaPlugin implements AuraSkillsPlugin {
         loader.generateUserFile("abilities.yml");
         loader.generateUserFile("mana_abilities.yml");
         loader.generateUserFile("xp_requirements.yml");
+        loader.generateUserFile("player_caps.yml");
+        loader.generateUserFile("equipment_requirements.yml");
         for (Skill skill : Skills.values()) {
             String sources = "sources/" + skill.name().toLowerCase(Locale.ROOT) + ".yml";
             loader.generateUserFile(sources);
@@ -449,6 +458,7 @@ public class AuraSkills extends JavaPlugin implements AuraSkillsPlugin {
         pm.registerEvents(new FishingLootHandler(this), this);
         pm.registerEvents(new MobLootHandler(this), this);
         pm.registerEvents(new RequirementListener(this), this);
+        pm.registerEvents(new EquipmentRequirementListener(this, equipmentRequirementManager), this);
         pm.registerEvents(new ItemListener(this), this);
         pm.registerEvents(new ArmorListener(configStringList(Option.MODIFIER_ARMOR_EQUIP_BLOCKED_MATERIALS)), this);
         pm.registerEvents(new ArmorModifierListener(this), this);
@@ -485,6 +495,10 @@ public class AuraSkills extends JavaPlugin implements AuraSkillsPlugin {
 
     public RequirementManager getRequirementManager() {
         return requirementManager;
+    }
+
+    public EquipmentRequirementManager getEquipmentRequirementManager() {
+        return equipmentRequirementManager;
     }
 
     public InventoryManager getInventoryManager() {
@@ -542,6 +556,15 @@ public class AuraSkills extends JavaPlugin implements AuraSkillsPlugin {
     @Override
     public BukkitLevelManager getLevelManager() {
         return levelManager;
+    }
+
+    public PlayerSkillCapManager getPlayerSkillCapManager() {
+        return playerSkillCapManager;
+    }
+
+    @Override
+    public int getSkillLevelCap(User user, Skill skill) {
+        return playerSkillCapManager.getEffectiveCap(user.getUuid(), skill);
     }
 
     @Override

@@ -1,0 +1,5 @@
+# Per-player skill level caps. UUIDs and skill keys are added by /auraskills commands.
+version: 2
+# Players without a personal skill cap use this value for every enabled skill.
+default-cap: 5
+players: {}

@@ -36,6 +36,7 @@ import dev.aurelium.auraskills.common.trait.TraitManager;
 import dev.aurelium.auraskills.common.trait.TraitRegistry;
 import dev.aurelium.auraskills.common.ui.UiProvider;
 import dev.aurelium.auraskills.common.user.User;
+import dev.aurelium.auraskills.api.skill.Skill;
 import dev.aurelium.auraskills.common.user.UserManager;
 import dev.aurelium.auraskills.common.util.PlatformUtil;
 
@@ -113,6 +114,14 @@ public interface AuraSkillsPlugin {
     ModifierManager getModifierManager();
 
     AntiAfkManager getAntiAfkManager();
+
+    /**
+     * Gets the effective maximum level for one player's skill. Platforms that do
+     * not support per-player caps retain the configured skill maximum.
+     */
+    default int getSkillLevelCap(User user, Skill skill) {
+        return skill.getMaxLevel();
+    }
 
     /**
      * Get a user instance from a player reference instance

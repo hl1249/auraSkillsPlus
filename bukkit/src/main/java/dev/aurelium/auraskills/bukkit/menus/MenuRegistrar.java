@@ -48,6 +48,8 @@ public class MenuRegistrar {
         });
 
         buildMenu("skills", menu -> new SkillsMenu(plugin).build(menu));
+        buildMenu("limit_points", menu -> new LimitPointsMenu(plugin).build(menu));
+        buildMenu("limit_point_confirm", menu -> new LimitPointConfirmMenu(plugin).build(menu));
         buildMenu("stats", menu -> new StatsMenu(plugin).build(menu));
         buildMenu("level_progression", menu -> new LevelProgressionMenu(plugin).build(menu));
         buildMenu("leaderboard", menu -> new LeaderboardMenu(plugin).build(menu));

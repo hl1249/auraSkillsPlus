@@ -1,0 +1,113 @@
+title: '<white>你的技能'
+size: 5
+fill:
+  enabled: true
+  material: black_stained_glass_pane
+items:
+  your_skills:
+    pos: 0,0
+    material: player_head
+    display_name: '<aqua>{{your_skills}} - <gold>{player}'
+    lore:
+    - '<gray>{{your_skills_desc}}'
+  points:
+    pos: 0,4
+    material: experience_bottle
+    display_name: '<green>可分配技能上限点：<gold>{points}'
+    lore:
+    - '<gray>点击下方任意技能开始分配。'
+  stats:
+    pos: 0,8
+    material: player_head
+    display_name: '<aqua>{{stats}}'
+    lore:
+    - '<gray>{{stats_desc}}'
+  close:
+    pos: 4,8
+    material: barrier
+    display_name: '<red>{{close}}'
+templates:
+  skill:
+    contexts:
+      archery:
+        group: first_row
+        order: 1
+        material: bow
+      fighting:
+        group: first_row
+        order: 2
+        material: iron_sword
+      defense:
+        group: first_row
+        order: 3
+        material: chainmail_chestplate
+      endurance:
+        group: first_row
+        order: 4
+        material: golden_apple
+      farming:
+        group: second_row
+        order: 1
+        material: iron_hoe
+      foraging:
+        group: second_row
+        order: 2
+        material: iron_axe
+      mining:
+        group: second_row
+        order: 3
+        material: iron_pickaxe
+      fishing:
+        group: second_row
+        order: 4
+        material: fishing_rod
+      excavation:
+        group: second_row
+        order: 5
+        material: iron_shovel
+      agility:
+        group: third_row
+        order: 1
+        material: feather
+      alchemy:
+        group: third_row
+        order: 2
+        material: potion
+      enchanting:
+        group: third_row
+        order: 3
+        material: enchanting_table
+      sorcery:
+        group: third_row
+        order: 4
+        material: blaze_rod
+      healing:
+        group: third_row
+        order: 5
+        material: splash_potion
+      forging:
+        group: third_row
+        order: 6
+        material: anvil
+    groups:
+      first_row:
+        start: 1,0
+        end: 1,8
+        align: center
+      second_row:
+        start: 2,0
+        end: 2,8
+        align: center
+      third_row:
+        start: 3,0
+        end: 3,8
+        align: center
+    display_name: '<aqua>{skill} <dark_aqua>{level}'
+    lore:
+    - '<gray>{desc}'
+    - ' '
+    - '<gold>上限等级：<yellow>{cap}'
+    - '<gold>已分配点数：<yellow>{allocated}'
+    - ' '
+    - '<yellow>点击分配技能上限点'
+file_version: 1
