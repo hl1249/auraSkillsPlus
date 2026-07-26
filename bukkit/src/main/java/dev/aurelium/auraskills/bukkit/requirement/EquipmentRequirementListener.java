@@ -86,6 +86,9 @@ public class EquipmentRequirementListener implements Listener {
     }
 
     private void check(Player player, String itemName, EquipmentRequirementManager.Requirement requirement, Cancellable event) {
+        if (player.isOp() || player.hasPermission("auraskills.requirement.bypass")) {
+            return;
+        }
         User user = plugin.getUser(player);
         if (user.getSkillLevel(requirement.skill()) >= requirement.level()) return;
         event.setCancelled(true);

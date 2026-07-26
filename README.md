@@ -80,6 +80,9 @@ All commands use the `/sk` alias. Skill and online-player arguments support tab 
 | `/sk takeSkillLimitPoints <player> <amount>` | 扣除未使用点 / Remove unused points | `auraskills.command.limitpoints.take` |
 | `/sk limitpoints` | 打开玩家分配 GUI / Open the allocation GUI | `auraskills.command.limitpoints.use` |
 
+管理员（OP）和拥有 `auraskills.requirement.bypass` 的玩家会绕过工具、护甲、药水与箭矢的技能等级限制。  
+Operators and players with `auraskills.requirement.bypass` bypass the skill requirements for tools, armor, potions, and arrows.
+
 ## 分配 GUI / Allocation GUI
 
 `/sk limitpoints` 的技能列表沿用 AuraSkills 的技能菜单布局。顶部经验瓶显示未使用点数，技能 Lore 显示该技能上限与已分配点数。
