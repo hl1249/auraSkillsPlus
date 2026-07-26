@@ -45,6 +45,15 @@ public class PlaceholderHelper {
         if (message.equals(key.getPath())) {
             message = plugin.getMessageProvider().getRaw(commonKey, locale);
         }
+        // The limit-point selector deliberately reuses the header and stats items
+        // from the standard skills menu, so resolve those menu-specific messages too.
+        if (message.equals(commonKey.getPath()) && activeMenu.getName().equals("limit_points")) {
+            MessageKey skillsKey = MessageKey.of("menus.skills." + stripped);
+            message = plugin.getMessageProvider().getRaw(skillsKey, locale);
+            if (!message.equals(skillsKey.getPath())) {
+                return TextUtil.replace(message, replacer);
+            }
+        }
         // Replace placeholders
         message = TextUtil.replace(message, replacer);
         if (!message.equals(commonKey.getPath())) {

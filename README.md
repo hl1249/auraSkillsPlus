@@ -1,128 +1,131 @@
-<h1 style="text-align:center;">AuraSkills</h1>
+# AuraSkillsPlus
 
-<p style="text-align:center;">
-The ultra-versatile Minecraft RPG skills plugin
-</p>
+> AuraSkillsPlus 是基于 AuraSkills 的 RPG 技能扩展版本，新增玩家个人技能等级上限、可分配上限点 GUI，以及工具、护甲、药水和箭矢的技能等级限制。  
+> AuraSkillsPlus is an RPG skills extension based on AuraSkills. It adds per-player skill caps, a GUI point-allocation system, and skill requirements for tools, armor, potions, and arrows.
 
-[![GitHub Release](https://img.shields.io/github/v/release/Archy-X/AuraSkills?style=flat-square)](https://github.com/Archy-X/AuraSkills/releases/latest)
-[![Maven Central Version](https://img.shields.io/maven-central/v/dev.aurelium/auraskills-api-bukkit?style=flat-square&color=%238529F5)](https://central.sonatype.com/artifact/dev.aurelium/auraskills-api-bukkit)
-[![Spiget Downloads](https://img.shields.io/spiget/downloads/81069?style=flat-square)](https://www.spigotmc.org/resources/81069/)
+## 功能 / Features
 
-<p style="text-align: center;font-weight: bold;">
-  <a href="https://aurelium.dev/auraskills/download">Downloads</a>
-  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://wiki.aurelium.dev/auraskills">Wiki</a>
-  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://discord.gg/Bh2EZfB">Discord</a>
-</p>
+- **个人技能等级上限 / Per-player skill caps**：每位玩家的每项技能都可拥有独立上限；未单独设置时使用默认上限。  
+  Every player can have an individual cap for each skill; the configured default is used when no personal cap exists.
+- **可分配上限点 / Allocatable cap points**：管理员发放上限点后，玩家可在 GUI 中自行投入任意已启用技能。  
+  Administrators can grant cap points, which players can allocate to any enabled skill in a GUI.
+- **技能等级装备限制 / Skill-gated equipment**：采矿限制镐、砍树限制斧、草药/农业限制锄、挖掘限制铲、防御限制护甲、炼金限制药水、箭术限制箭矢。  
+  Mining gates pickaxes, Foraging gates axes, Farming gates hoes, Excavation gates shovels, Defense gates armor, Alchemy gates potions, and Archery gates arrows.
+- **可配置规则 / Configurable rules**：默认上限、玩家数据与每种物品所需等级均可通过 YAML 配置。  
+  Default caps, player data, and required levels for every material are configurable through YAML.
 
-## About
+## 安装 / Installation
 
-**AuraSkills** (formerly **Aurelium Skills**) is a Minecraft plugin that adds skills, stats, abilities, and other
-RPG-related features. The plugin is fully configurable and customizable, enabling usage on a wide range of server types.
+1. 构建或取得插件 JAR。  
+   Build or obtain the plugin JAR.
+2. 将 JAR 放入服务器的 `plugins` 目录。  
+   Place the JAR in the server `plugins` directory.
+3. 完整重启服务器，使插件生成配置文件。  
+   Fully restart the server to generate configuration files.
+4. 根据服务器玩法编辑 `plugins/AuraSkills/player_caps.yml` 和 `plugins/AuraSkills/equipment_requirements.yml`。  
+   Adjust `plugins/AuraSkills/player_caps.yml` and `plugins/AuraSkills/equipment_requirements.yml` for your server.
 
-Features include:
+> Java 代码更新后必须完整重启服务器；`/sk reload` 只能重载配置，不能加载新 JAR。  
+> A full server restart is required after Java code changes. `/sk reload` reloads configuration only; it cannot load a new JAR.
 
-- **Skills** - Gain skill XP to level skills through general Minecraft tasks, such as Farming or Mining.
-- **Stats** - Get player buffs like increased health and damage by leveling skills, which can be as independent
-  modifiers and on items.
-- **Abilities** - Skills have passive and active abilities that add gameplay mechanics, plus a full mana system.
-- **Menus** - Players can see everything related to skills in fully-configurable inventory GUIs.
-- **Rewards** - Customize rewards given for leveling skills, such as running commands or giving items.
-- **Loot** - Create custom loot tables for fishing, blocks, and mobs.
+## 配置 / Configuration
 
-See the [official website](https://aurelium.dev/auraskills) and [wiki](https://wiki.aurelium.dev/auraskills) for a more
-complete list of features. The wiki also contains the list
-of [server requirements](https://wiki.aurelium.dev/auraskills/server-requirements) to run the plugin.
+### 默认技能上限 / Default skill cap
 
-## Building
+文件：`plugins/AuraSkills/player_caps.yml`
 
-AuraSkills uses Gradle for dependencies and building.
-
-#### Compiling from source
-
-First, clone the project (requires Git to be installed):
-
-```
-git clone https://github.com/Archy-X/AuraSkills.git
-cd AuraSkills/
+```yaml
+version: 2
+default-cap: 5
+players: {}
 ```
 
-Then build depending on your operating system:
+未为玩家单独设置基础上限时，每项技能默认最高为 `default-cap`。实际技能上限为：
 
-Linux / macOS
-
-```
-./gradlew clean build
+```text
+min(基础上限 + 已分配上限点, skills.yml 中该技能的 max_level)
 ```
 
-Windows
+When no individual base cap is set, each skill uses `default-cap`. The effective cap is:
 
-```
-.\gradlew.bat clean build
-```
-
-The output jar can be found in the `build/libs` directory.
-
-## API
-
-AuraSkills has an extensive developer API.
-
-Read the full API documentation on the [wiki](https://wiki.aurelium.dev/auraskills/api), or view
-the [Javadocs](https://docs.aurelium.dev/auraskills-api-bukkit/).
-
-Release versions are published to the Maven central repository. Snapshot versions require adding the Sonatype OSS
-repository.
-
-### Maven
-
-```xml
-
-<repository>
-    <id>maven-central-snapshots</id>
-    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-</repository>
+```text
+min(base cap + allocated cap points, the skill max_level in skills.yml)
 ```
 
-```xml
+### 装备与消耗品要求 / Equipment and consumable requirements
 
-<dependency>
-    <groupId>dev.aurelium</groupId>
-    <artifactId>auraskills-api-bukkit</artifactId>
-    <version>2.3.5</version>
-    <scope>provided</scope>
-</dependency>
+文件：`plugins/AuraSkills/equipment_requirements.yml`
+
+默认阶段为：木质 `0`、石质 `5`、铁质 `50`、金质 `100`、钻石 `150`、下界合金 `300`。可直接修改材料名和所需等级。
+
+The default tiers are: wood `0`, stone `5`, iron `50`, gold `100`, diamond `150`, and netherite `300`. Edit material names and levels directly to customize them.
+
+原版不存在的材料（例如铜制工具）会被安全跳过。  
+Materials unavailable in vanilla Minecraft, such as copper tools, are safely skipped.
+
+## 命令 / Commands
+
+所有命令使用 `/sk` 别名；技能和在线玩家参数支持 Tab 补全。  
+All commands use the `/sk` alias. Skill and online-player arguments support tab completion.
+
+| 命令 / Command | 作用 / Purpose | 权限 / Permission |
+| --- | --- | --- |
+| `/sk addLevelLimit <skill> <player> <amount>` | 增加技能基础上限 / Add a skill base cap | `auraskills.command.cap.add` |
+| `/sk setLevelLimit <skill> <player> <cap>` | 设置技能基础上限 / Set a skill base cap | `auraskills.command.cap.set` |
+| `/sk getLevelLimit <skill> <player>` | 查询上限详情 / View cap details | `auraskills.command.cap.get` |
+| `/sk resetLevelLimit <skill> <player>` | 重置基础上限 / Reset base cap | `auraskills.command.cap.reset` |
+| `/sk addSkillLimitPoints <player> <amount>` | 发放可分配点 / Grant available points | `auraskills.command.limitpoints.add` |
+| `/sk setSkillLimitPoints <player> <amount>` | 设置可分配点余额 / Set available-point balance | `auraskills.command.limitpoints.set` |
+| `/sk getSkillLimitPoints <player>` | 查询可分配点 / View available points | `auraskills.command.limitpoints.get` |
+| `/sk takeSkillLimitPoints <player> <amount>` | 扣除未使用点 / Remove unused points | `auraskills.command.limitpoints.take` |
+| `/sk limitpoints` | 打开玩家分配 GUI / Open the allocation GUI | `auraskills.command.limitpoints.use` |
+
+## 分配 GUI / Allocation GUI
+
+`/sk limitpoints` 的技能列表沿用 AuraSkills 的技能菜单布局。顶部经验瓶显示未使用点数，技能 Lore 显示该技能上限与已分配点数。
+
+The `/sk limitpoints` skill list follows the AuraSkills menu layout. The top experience bottle shows unused points, while each skill lore shows its cap and allocated points.
+
+选择技能后：
+
+- 下界之星表示本次待分配点，进入时默认为 `0`。  
+  The Nether Star represents pending points and starts at `0`.
+- 点击 `+1` 或 `-1` 调整数量；点数不能超过余额、技能也不能超过全局上限。  
+  Use `+1` and `-1` to adjust the amount. It cannot exceed the balance or the skill global maximum.
+- 只有确认操作才会扣除余额并提高技能上限。余额为 `0` 时仍可进入页面查看，但不能完成分配。  
+  Only confirmation deducts points and raises the cap. Players may still view the page with a zero balance, but cannot complete allocation.
+
+## 构建 / Building
+
+要求：JDK 与本项目 Gradle 配置兼容。  
+Requirement: a JDK compatible with this project's Gradle configuration.
+
+Windows：
+
+```powershell
+.\gradlew.bat :bukkit:shadowJar --console=plain
 ```
 
-### Gradle
+Linux/macOS：
 
-**Groovy DSL:**
-
-```gradle
-repositories {
-    mavenCentral()
-    maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
-}
-
-dependencies {
-    compileOnly 'dev.aurelium:auraskills-api-bukkit:2.3.5'
-}
+```bash
+./gradlew :bukkit:shadowJar --console=plain
 ```
 
-**Kotlin DSL:**
+构建产物位于 `build/libs/AuraSkills-<version>.jar`。  
+The resulting JAR is located at `build/libs/AuraSkills-<version>.jar`.
 
-```Gradle Kotlin DSL
-repositories { 
-    mavenCentral()
-    maven("https://central.sonatype.com/repository/maven-snapshots/")
-}
+## 开发文档 / Development documentation
 
-dependencies { 
-    compileOnly("dev.aurelium:auraskills-api-bukkit:2.3.5")
-}
-```
+完整的功能、模块映射、规则边界和验收步骤见：  
+For full feature details, module mapping, rule boundaries, and acceptance steps, see:
 
-## Contributing
+- [新增功能说明 / New Features](NEW_FEATURES_ZH-CN.md)
 
-We welcome contributions from the community. Please read the [contributing guide](CONTRIBUTING.md) for instructions
-on setting up a development environment and important guidelines you should know before submitting a pull request.
+## 上游项目 / Upstream project
+
+AuraSkillsPlus 以 AuraSkills 为基础开发。原版 AuraSkills 的通用技能、属性、能力、奖励、战利品与 API 文档，请参阅其官方资源。  
+AuraSkillsPlus is built on AuraSkills. Refer to the official AuraSkills resources for its general skills, stats, abilities, rewards, loot, and API documentation.
+
+- [AuraSkills website](https://aurelium.dev/auraskills)
+- [AuraSkills wiki](https://wiki.aurelium.dev/auraskills)

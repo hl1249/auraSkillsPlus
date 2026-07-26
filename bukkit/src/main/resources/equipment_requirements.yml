@@ -1,5 +1,5 @@
 # A material may appear only once. Unknown materials (for example copper tools on vanilla) are skipped.
-deny-message: '<red>{skill} level {required} is required to use {item}.'
+deny-message: '<red>{skill}等级不足，需要达到 {required} 级才能使用该物品。'
 requirements:
   mining:
     WOODEN_PICKAXE: 0
@@ -22,6 +22,13 @@ requirements:
     GOLDEN_SHOVEL: 100
     DIAMOND_SHOVEL: 150
     NETHERITE_SHOVEL: 300
+  farming:
+    WOODEN_HOE: 0
+    STONE_HOE: 5
+    IRON_HOE: 50
+    GOLDEN_HOE: 100
+    DIAMOND_HOE: 150
+    NETHERITE_HOE: 300
   defense:
     LEATHER_HELMET: 0
     LEATHER_CHESTPLATE: 0

@@ -65,6 +65,7 @@
 
 - `mining`：镐
 - `foraging`：斧头
+- `farming`：锄头
 - `excavation`：铲子
 - `defense`：全套护甲
 - `alchemy`：药水效果类型
